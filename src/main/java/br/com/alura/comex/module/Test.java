@@ -56,6 +56,8 @@ public class Test {
                 "222.222.222-22");
         System.out.println(newClient.getFullDescription() + "\n");
         System.out.println(newClient2.getFullDescription() + "\n");
+
+        System.out.println("Teste branch semana 7");
     }
 
 }
