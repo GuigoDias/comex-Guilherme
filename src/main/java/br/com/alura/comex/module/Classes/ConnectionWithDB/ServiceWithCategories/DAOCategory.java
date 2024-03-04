@@ -13,15 +13,13 @@ public class DAOCategory {
     }
 
     public void save(Category category){
-        Category category1 = new Category(category.getName(), category.getDescription());
-
         String sql = "INSERT INTO categoria (nome, descricao) VALUES (?, ?)";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            preparedStatement.setString(1,category1.getName());
-            preparedStatement.setString(2, category1.getDescription());
+            preparedStatement.setString(1,category.getName());
+            preparedStatement.setString(2, category.getDescription());
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -67,9 +65,9 @@ public class DAOCategory {
             ps.setString(1, update);
             ps.setInt(2, number);
 
+            conn.commit();
             ps.execute();
             ps.close();
-            conn.commit();
             conn.close();
         } catch (SQLException e) {
             try{
