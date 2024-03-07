@@ -34,9 +34,9 @@ public class ServiceCategory {
         new DAOCategory(conn).alter(sql,number,update);
     }
 
-    private Category findWithId(String name) {
+    private Category findWithId(int idCategory) {
         Connection conn = connection.reconnection();
-        Category category = new DAOCategory(conn).categoryListener(name);
+        Category category = new DAOCategory(conn).categoryListener(idCategory);
         if(category != null) {
             return category;
         } else {
@@ -44,9 +44,9 @@ public class ServiceCategory {
         }
     }
 
-    public void deleteCategory(String nameCategory){
-        var account = findWithId(nameCategory);
+    public void deleteCategory(int idCategory){
+        var account = findWithId(idCategory);
         Connection conn = connection.reconnection();
-        new DAOCategory(conn).delete(nameCategory);
+        new DAOCategory(conn).delete(idCategory);
     }
 }

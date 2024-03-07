@@ -2,18 +2,35 @@ package br.com.alura.comex.module.Classes;
 
 import br.com.alura.comex.module.Classes.Address;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "conta")
 public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "cliente_nome")
     private String name;
+    @Column(name = "cliente_cpf")
     private String cpf;
+    @Column(name = "cliente_email")
     private String email;
+    @Column(name = "profissao")
     private String profession;
+    @Column(name = "telefone")
     private String telephone;
+    @Column(name = "endereco")
+    @ManyToMany
     private Address address;
 
+    @Column(name = "saldo")
     private BigDecimal money;
+
+    public Client(String name) {
+        this.name = name;
+    }
 
     public BigDecimal getMoney() {
         return money;

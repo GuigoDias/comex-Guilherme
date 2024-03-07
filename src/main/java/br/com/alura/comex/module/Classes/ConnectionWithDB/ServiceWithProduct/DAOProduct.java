@@ -1,25 +1,31 @@
-package br.com.alura.comex.module.Classes.ConnectionWithDB.ServiceWithCategories;
+package br.com.alura.comex.module.Classes.ConnectionWithDB.ServiceWithProduct;
 
 import br.com.alura.comex.module.Classes.Category;
+import br.com.alura.comex.module.Classes.Client;
+import br.com.alura.comex.module.Classes.Product;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DAOCategory {
+public class DAOProduct {
     private Connection conn;
-    DAOCategory(Connection connection){
+    DAOProduct(Connection connection){
         this.conn = connection;
     }
 
-    public void save(Category category){
-        String sql = "INSERT INTO categoria (nome, descricao) VALUES (?, ?)";
+    public void save(Product product){
+        String sql = "INSERT INTO produtos (nome, descricao, preco_unitario, quantidade, categoria_id) VALUES (?, ?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-            preparedStatement.setString(1,category.getName());
-            preparedStatement.setString(2, category.getDescription());
+            preparedStatement.setString(1,product.getName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setDouble(3,product.getUnitPrice());
+            preparedStatement.setInt(4,product.getAmount());
+            preparedStatement.setObject(5,product.getCategory());
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -29,11 +35,11 @@ public class DAOCategory {
         }
     }
 
-    public Set<Category> show(){
+    public Set<Product> show(){
         PreparedStatement ps;
         ResultSet rs;
-        Set<Category> categories = new HashSet<>();
-        String sql = "SELECT * from categoria";
+        Set<Product> products = new HashSet<>();
+        String sql = "SELECT * from produtos";
 
         try {
             ps = conn.prepareStatement(sql);
@@ -42,8 +48,11 @@ public class DAOCategory {
                 int id = rs.getInt(1);
                 String name = rs.getString(2);
                 String description = rs.getString(3);
+                double unitPrice = rs.getDouble(4);
+                int amount = rs.getInt(5);
+                Category category = (Category) rs.getObject(6);
 
-                categories.add(new Category(id,name,description));
+                products.add(new Product(id,name,description,unitPrice,amount,category));
             }
 
             rs.close();
@@ -52,7 +61,7 @@ public class DAOCategory {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return categories;
+        return products;
     }
 
     public void alter(String sql, int number, String update) {
@@ -78,22 +87,25 @@ public class DAOCategory {
         }
     }
 
-    public Category categoryListener(int idCategory) {
-        String sql = "SELECT * FROM conta WHERE nome = " + idCategory;
+    public Product productListener(int idProduct) {
+        String sql = "SELECT * FROM produtos WHERE nome = " + idProduct;
 
         Statement ps;
         ResultSet rs;
-        Category category = null;
+        Product product = null;
         try {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery(sql);
 
             while (rs.next()) {
                 int id = rs.getInt(1);
-                String nameString = rs.getString(2);
+                String name = rs.getString(2);
                 String description = rs.getString(3);
+                double unitPrice = rs.getDouble(4);
+                int amount = rs.getInt(5);
+                Category category = (Category) rs.getObject(6);
 
-                category = new Category(id,nameString,description);
+                product = new Product(id,name,description,unitPrice,amount,category);
             }
             rs.close();
             ps.close();
@@ -101,16 +113,16 @@ public class DAOCategory {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return category;
+        return product;
     }
 
-    public void delete(int idCategory){
-        String sql = "DELETE FROM categoria WHERE nome = ?";
+    public void delete(int idProduct){
+        String sql = "DELETE FROM produtos WHERE nome = ?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setInt(1, idCategory);
+            ps.setInt(1, idProduct);
 
             ps.execute();
             ps.close();

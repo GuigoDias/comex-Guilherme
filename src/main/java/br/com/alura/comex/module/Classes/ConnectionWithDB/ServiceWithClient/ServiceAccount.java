@@ -25,6 +25,11 @@ public class ServiceAccount {
         return new DAOAccount(conn).show();
     }
 
+    public Set<Client> showOnlyName(){
+        Connection conn = connection.reconnection();
+        return new DAOAccount(conn).showWithName();
+    }
+
     private void alterAccount(Client clientId, BigDecimal bigDecimal){
             Connection conn = connection.reconnection();
         new DAOAccount(conn).alter(clientId.getId(), bigDecimal);

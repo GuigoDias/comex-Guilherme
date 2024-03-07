@@ -2,13 +2,27 @@ package br.com.alura.comex.module.Classes;
 
 import br.com.alura.comex.module.Classes.CEP.RecordCEP;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Endereco")
 public class Address {
+    @Id
     private String cep;
+    @Column(name = "bairro")
     private String district;
+    @Column(name = "cidade")
     private String city;
+    @Column(name = "complemento")
     private String complement;
+    @Column(name = "estado")
     private String state;
+    @Column(name = "rua")
     private String street;
+    @Column(name = "numero")
     private int number;
 
     public Address(){

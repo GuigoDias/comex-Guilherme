@@ -64,6 +64,30 @@ public class DAOAccount {
         return clients;
     }
 
+    public Set<Client> showWithName(){
+        PreparedStatement ps;
+        ResultSet rs;
+        Set<Client> clients = new HashSet<>();
+        String sql = "SELECT * from conta WHERE conta_ativa = true";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                String name = rs.getString(3);
+
+                clients.add(new Client(name));
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return clients;
+    }
+
     public void alter(int number, BigDecimal bigDecimal) {
         PreparedStatement ps;
         String sql = "UPDATE conta SET saldo = ? WHERE numero = ? AND conta_ativa = true";

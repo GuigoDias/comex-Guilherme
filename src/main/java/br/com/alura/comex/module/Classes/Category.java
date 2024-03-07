@@ -1,8 +1,16 @@
 package br.com.alura.comex.module.Classes;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "categoria")
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "nome")
     private String name;
+    @Column(name = "descricao")
     private String description;
 
     public Category(){

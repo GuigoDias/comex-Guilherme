@@ -77,8 +77,8 @@ public class TestNewCategoryWithDAO {
 
     private static void deleteCategory () {
         System.out.println("Digite o nome da categoria que quer excluir:");
-        var nameCategory = scanner.nextLine();
+        var idCategory = scanner.nextInt();
 
-        saTest.deleteCategory(nameCategory);
+        saTest.deleteCategory(idCategory);
     }
 }
